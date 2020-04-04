@@ -33,8 +33,8 @@ public class UserDAOTest extends BaseDAOTest{
 	@Test
 	public void testCreateUsers() {
 		Users user1 = new Users();
-		user1.setEmail("tofgmmy11@gmail.com");
-		user1.setFullName("Tommy11 Timothy");
+		user1.setEmail("tofgmmy151@gmail.com");
+		user1.setFullName("Tommy114 Timothy");
 		user1.setPassword("1abcdefghij");
 			
 		user1 = userDAO.create(user1);

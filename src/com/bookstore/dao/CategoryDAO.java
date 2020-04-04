@@ -19,33 +19,28 @@ public class CategoryDAO extends JpaDAO<Category> implements GenericDAO<Category
 	}
 
 	@Override
-	public Category update(Category t) {
-		// TODO Auto-generated method stub
-		return null;
+	public Category update(Category category) {
+		return super.update(category);
 	}
 
 	@Override
 	public Category get(Object id) {
-		// TODO Auto-generated method stub
-		return null;
+		return super.find(Category.class, id);
 	}
 
 	@Override
 	public void delete(Object id) {
-		// TODO Auto-generated method stub
-		
+		super.delete(Category.class, id);		
 	}
 
 	@Override
 	public List<Category> listAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.findWithNamedQuery("Category.findAll");
 	}
 
 	@Override
 	public long count() {
-		// TODO Auto-generated method stub
-		return 0;
+		return super.countWithNamedQuery("Category.countAll");
 	}
 
 }
