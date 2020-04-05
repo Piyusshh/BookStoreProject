@@ -6,14 +6,36 @@
 	Welcome, Admin | <a href="logout">Logout</a>
 	<br/><br/>
 	</div>
-	<div>
-		<b>
-		<a href="list_users">Users</a> |
-		<a href="list_category">Categories</a> |
-		<a href="books">Books</a> |
-		<a href="customer">Customers</a> |
-		<a href="reviews">Reviews</a> |
-		<a href="orders">Orders</a> |
-		</b>
+	<div id="headermenu">
+		<div>
+			<a href="list_users">
+				<img src="../images/user.png" height="45" width="40" /><br/>Users
+			</a>
+		</div>
+		<div>
+			<a href="list_category">
+				<img src="../images/category.png" height="45" width="40" /><br/>Categories
+			</a>
+		</div>
+		<div>
+			<a href="books">
+				<img src="../images/book.png" height="45" width="40" /><br/>Books
+			</a>
+		</div>
+		<div>
+			<a href="customer">
+				<img src="../images/customer.png" height="45" width="40" /><br/>Customers
+			</a>
+		</div>
+		<div>
+			<a href="reviews">
+				<img src="../images/review.png" height="45" width="40" /><br/>Reviews
+			</a>	
+		</div>
+		<div>
+			<a href="orders">
+				<img src="../images/order.png" height="45" width="40" /><br/>Orders
+			</a>
+		</div>
 	</div>
 </div>

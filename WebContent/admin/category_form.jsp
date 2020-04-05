@@ -13,12 +13,13 @@
 		Edit Category
 	</c:if>
 </title>
+<link rel="stylesheet" href="../css/style.css" >
 </head>
 <body>
 	<jsp:directive.include file="header.jsp" />
 	
 	<div align="center">
-		<h2>
+		<h2 class="pageheading">
 			<c:if test="${category != null}">
 				Edit Category
 			</c:if>
@@ -37,7 +38,7 @@
 			<form action ="create_category" method="post" onsubmit="return validateFormInput()">
 		</c:if>
 		
-		<table>
+		<table class="form">
 			<tr>
 				<td align="right">Name:</td>
 				<td align="left"><input type="text" name="name" id="name" size="20" value="${category.name}" /></td>
@@ -45,8 +46,8 @@
 			<tr><td>&nbsp;</td></tr>
 			<tr>
 				<td colspan="2" align="center">
-				<input type="submit" value="Save">
-				<input type="button" value="Cancel" onclick="javascript:history.go(-1)">
+				<button type="submit">Save</button>&nbsp;&nbsp;&nbsp;
+				<button onclick="javascript:history.go(-1)">Cancel</button>
 				</td>
 			</tr>
 		</table>
