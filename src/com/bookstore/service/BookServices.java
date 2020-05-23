@@ -2,6 +2,8 @@ package com.bookstore.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -39,8 +41,16 @@ public class BookServices {
 	}
 	
 	public void listBooks() throws ServletException, IOException {
+		listBooks(null);
+	}
+	
+	public void listBooks(String message) throws ServletException, IOException {
 		List<Book> listBooks = bookDAO.listAll();
 		request.setAttribute("listBooks", listBooks);
+		
+		if(message != null) {
+			request.setAttribute("message", message);
+		}
 		
 		String ListPage = "book_list.jsp";
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(ListPage);
@@ -61,6 +71,18 @@ public class BookServices {
 	public void createBook() throws ServletException, IOException {
 		Integer categoryId = Integer.parseInt(request.getParameter("category"));
 		String title = request.getParameter("title");
+		
+		Book existBook = bookDAO.findByTitle(title);
+		
+		if (existBook != null) {
+			String message = "Could not create new Book because the title " + title + " already exists";
+			listBooks(message);
+			return;
+		}
+		
+		
+		
+		
 		String author = request.getParameter("author");
 		String description = request.getParameter("description");
 		String isbn = request.getParameter("isbn");
@@ -82,8 +104,49 @@ public class BookServices {
 		System.out.println("price ID: " + price);
 		System.out.println("publishDate: " + publishDate);
 		
-
 		
+		Book newBook = new Book();
+		newBook.setTitle(title);
+		newBook.setAuthor(author);
+		newBook.setDescription(description);
+		newBook.setIsbn(isbn);
+		newBook.setPublishTime(publishDate);
+		
+		Category category = categoryDAO.get(categoryId);
+		System.out.println("selected category name is " + category.getName());
+		newBook.setCategory(category);
+		
+		newBook.setPrice(price);
+		
+		
+		
+		Part part = request.getPart("bookImage");
+		
+		if(part != null && part.getSize() > 0) {
+			long size = part.getSize();
+			byte[] imageBytes = new byte[(int) size];
+			
+			InputStream inputStream = part.getInputStream();
+			inputStream.read(imageBytes);
+			inputStream.close();
+			
+			newBook.setImage(imageBytes);  
+		}
+		
+		
+		//String imagePath = "C:\\Users\\piyus\\Desktop\\BookStoreWebsite Images\\java.JPG";
+		
+		//byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+		//newBook.setImage(imageBytes);
+		
+		
+		Book createdBook = bookDAO.create(newBook);
+		
+		if (createdBook.getBookId() > 0) {
+			String message = "A New Book has been created Successfully.";
+			listBooks(message);
+		}
+
 		
 	}
 

@@ -191,5 +191,34 @@ public class BookDAOTest extends BaseDAOTest {
 		
 		assertTrue(createBook.getBookId() > 0);
 	}
+	
+	
+	@Test
+	public void testCreate3rdBook() throws ParseException, IOException {
+		Book newBook = new Book();
+		
+		Category category = new Category("Advance Java");
+		category.setCategoryId(2);
+		newBook.setCategory(category);
+		
+		newBook.setTitle("Python 8 in Action");
+		newBook.setAuthor("Alan Mycroft");
+		newBook.setDescription("Java 8 in Action is a clearly written guide to the new Features of java 8");
+		newBook.setPrice(36.72f);
+		newBook.setIsbn("161591994");
+		
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date publishDate = dateFormat.parse("05/28/2008");
+		newBook.setPublishTime(publishDate);
+		
+		String imagePath = "C:\\Users\\piyus\\Desktop\\BookStoreWebsite Images\\Java_8_in_Action.JPG";
+		
+		byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
+		newBook.setImage(imageBytes);
+		
+		Book createBook = bookDao.create(newBook);
+		
+		assertTrue(createBook.getBookId() > 0);
+	}
 
 }
