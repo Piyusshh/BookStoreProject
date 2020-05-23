@@ -19,7 +19,7 @@
 			</a>
 		</div>
 		<div>
-			<a href="books">
+			<a href="list_books">
 				<img src="../images/book.png" height="45" width="40" /><br/>Books
 			</a>
 		</div>
