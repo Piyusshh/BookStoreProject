@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -47,8 +48,8 @@
 					<td>${book.title}</td>
 					<td>${book.author}</td>
 					<td>${book.category.name}</td>
-					<td>${book.price}</td>
-					<td>${book.lastUpdateTime}</td>
+					<td>RS.${book.price}</td>
+					<td><fmt:formatDate pattern='MM/dd/yyyy' value='${book.lastUpdateTime}'/></td>
 					<td>
 						<a href="edit_book?id=${book.bookId}">Edit</a> &nbsp;
 						<a href="javascript:void(0);" class="deleteLink" id="${book.bookId}">Delete</a>
@@ -66,9 +67,9 @@
 		$(document).ready(function() {
 			$(".deleteLink").each(function() {
 				$(this).on("click", function() {
-					userId = $(this).attr("id");
-					if (confirm('Are You Sure you want to delete with ID ' + userId + '?')) {
-						window.location = 'delete_user?id=' + userId;
+					bookId = $(this).attr("id");
+					if (confirm('Are You Sure you want to delete the Book with ID ' + bookId + '?')) {
+						window.location = 'delete_book?id=' + bookId;
 					}
 				});
 			});

@@ -68,8 +68,8 @@ public class BookServices {
 		requestDispatcher.forward(request, response);
 	}
 
+	
 	public void createBook() throws ServletException, IOException {
-		Integer categoryId = Integer.parseInt(request.getParameter("category"));
 		String title = request.getParameter("title");
 		
 		Book existBook = bookDAO.findByTitle(title);
@@ -80,9 +80,22 @@ public class BookServices {
 			return;
 		}
 		
+		Book newBook = new Book();
+		readBookFields(newBook);
+				
 		
+		Book createdBook = bookDAO.create(newBook);
 		
+		if (createdBook.getBookId() > 0) {
+			String message = "A New Book has been created Successfully.";
+			listBooks(message);
+		}
+
 		
+	}
+
+	public void readBookFields(Book book) throws ServletException, IOException {
+		String title = request.getParameter("title");
 		String author = request.getParameter("author");
 		String description = request.getParameter("description");
 		String isbn = request.getParameter("isbn");
@@ -95,28 +108,20 @@ public class BookServices {
 		} catch (ParseException ex) {
 			throw new ServletException("Error parsing publish date (format is MM/dd/yyyy");
 		}
+			
 		
-		System.out.println("Category ID: " + categoryId);
-		System.out.println("Title: " + title);
-		System.out.println("author ID: " + author);
-		System.out.println("description ID: " + description);
-		System.out.println("isbn ID: " + isbn);
-		System.out.println("price ID: " + price);
-		System.out.println("publishDate: " + publishDate);
+		book.setTitle(title);
+		book.setAuthor(author);
+		book.setDescription(description);
+		book.setIsbn(isbn);
+		book.setPublishTime(publishDate);
 		
-		
-		Book newBook = new Book();
-		newBook.setTitle(title);
-		newBook.setAuthor(author);
-		newBook.setDescription(description);
-		newBook.setIsbn(isbn);
-		newBook.setPublishTime(publishDate);
-		
+		Integer categoryId = Integer.parseInt(request.getParameter("category"));
 		Category category = categoryDAO.get(categoryId);
 		System.out.println("selected category name is " + category.getName());
-		newBook.setCategory(category);
+		book.setCategory(category);
 		
-		newBook.setPrice(price);
+		book.setPrice(price);
 		
 		
 		
@@ -130,7 +135,7 @@ public class BookServices {
 			inputStream.read(imageBytes);
 			inputStream.close();
 			
-			newBook.setImage(imageBytes);  
+			book.setImage(imageBytes);  
 		}
 		
 		
@@ -138,16 +143,55 @@ public class BookServices {
 		
 		//byte[] imageBytes = Files.readAllBytes(Paths.get(imagePath));
 		//newBook.setImage(imageBytes);
-		
-		
-		Book createdBook = bookDAO.create(newBook);
-		
-		if (createdBook.getBookId() > 0) {
-			String message = "A New Book has been created Successfully.";
-			listBooks(message);
-		}
 
 		
+	}
+	
+	
+	public void editBook() 
+			throws ServletException, IOException {
+		Integer bookId = Integer.parseInt(request.getParameter("id"));
+		Book book = bookDAO.get(bookId);
+		List<Category> listCategory = categoryDAO.listAll();
+		
+		request.setAttribute("book", book);
+		request.setAttribute("listCategory", listCategory);
+		
+		String editPage = "book_form.jsp";
+		RequestDispatcher requestDispatcher = request.getRequestDispatcher(editPage);
+		requestDispatcher.forward(request, response);
+		
+		
+	}
+
+	public void updateBook() throws ServletException, IOException {
+		Integer bookId = Integer.parseInt(request.getParameter("bookId"));
+		String title = request.getParameter("title");
+		
+		Book existsBook = bookDAO.get(bookId);
+		Book bookByTitle = bookDAO.findByTitle(title);
+		
+		if(existsBook.equals(bookByTitle)) {
+			String message = "Could not Update book because there's another book having the same title";
+			listBooks(message);
+			return;
+		}
+		
+		readBookFields(existsBook);
+		
+		bookDAO.update(existsBook);
+		
+		String message = "The Book Has Been Updated Successfully";
+		listBooks(message);
+	}
+
+	public void deleteBook() throws ServletException, IOException {
+		Integer bookId = Integer.parseInt(request.getParameter("id"));
+		
+		bookDAO.delete(bookId);
+		
+		String message = "The Book Has Been Deleted Successfully";
+		listBooks(message);
 	}
 
 }

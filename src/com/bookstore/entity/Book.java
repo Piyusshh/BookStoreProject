@@ -36,6 +36,28 @@ import org.hibernate.engine.jdbc.env.spi.IdentifierCaseStrategy;
 })
 public class Book implements java.io.Serializable {
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + bookId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (bookId != other.bookId)
+			return false;
+		return true;
+	}
+
 	private int bookId;
 	private Category category;
 	private String title;
